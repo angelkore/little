@@ -2,7 +2,7 @@ import csv
 
 from app.tap import Tap
 from app.trip import Trip
-from app.exceptions import AppException
+from app.exceptions import AppException, ValidationException
 
 OUTPUT_HEADERS = ['Started', 'Finished', 'DurationSecs', 'FromStopId', 'ToStopId', 'ChargeAmount', 'CompanyId', 'BusID', 'PAN', 'Status']
 
@@ -54,8 +54,8 @@ def getTripsFromTaps(taps):
                 newTrip = Trip()
                 newTrip.addTap(tap)
                 trips.append(newTrip)
-        except AppException as e:
-            print(f"Can't add tap ID {tap.id} due to {e}, skipping...")
+        except ValidationException as e:
+            print(f"Can't add tap ID {tap.id} due to \"{e.message}\", skipping...")
 
     return trips
 
